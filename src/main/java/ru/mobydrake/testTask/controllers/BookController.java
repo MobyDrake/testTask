@@ -11,14 +11,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/books")
 @RequiredArgsConstructor
+@RequestMapping(value = "/books", produces = "application/json")
 public class BookController {
 
     private final BookDao bookDao;
 
     @GetMapping()
-    public ResponseEntity<List<Book>> readAllBooks() {
+    public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(bookDao.findAllBook().stream()
                 .sorted((o1, o2) -> o2.getTitle().compareToIgnoreCase(o1.getTitle()))
                 .collect(Collectors.toList()));
@@ -30,7 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/authors")
-    public ResponseEntity<Map<String, List<Book>>> readAllBookGroupAuthor() {
+    public ResponseEntity<Map<String, List<Book>>> getAllBookGroupAuthor() {
         return ResponseEntity.ok(bookDao.findAllBook().stream().collect(Collectors.groupingBy(Book::getAuthor)));
     }
 }
